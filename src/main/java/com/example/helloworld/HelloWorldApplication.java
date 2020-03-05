@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-public class HelloworldApplication {
+public class HelloWorldApplication {
 
     @Value("${TARGET:World}")
     String target;
@@ -21,6 +21,6 @@ public class HelloworldApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(HelloworldApplication.class, args);
+        SpringApplication.run(HelloWorldApplication.class, args);
     }
 }
