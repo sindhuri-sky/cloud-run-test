@@ -1,5 +1,7 @@
 steps:
-  - name: 'unit_tests'
-    args: ['bash', './application/runTests.sh']
+  - name: 'ubuntu'
+    id: 'unit-tests'
+    args: ['bash', './runTests.sh']
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '.']
+
