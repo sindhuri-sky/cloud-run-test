@@ -7,4 +7,7 @@ steps:
     id: 'build'
     args: ['build', '-t', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '.']
     dir: 'application'
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push'
+    args: ['push', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA']
 
