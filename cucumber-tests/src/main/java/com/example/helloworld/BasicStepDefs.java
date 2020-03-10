@@ -12,21 +12,24 @@ public class BasicStepDefs
 
     @Given("^setup app$")
     public void setupApp() {
+        log.info("TESTS setup");
 
     }
 
     @When("^the endpoint is called$")
     public void theEndpointIsCalled() {
-
+        log.info("TESTS call endpoint");
     }
 
     @Then("^the response is Hello World$")
     public void theResponseIsHelloWorld() {
+        log.info("TESTS handle response details");
+
     }
 
     @Then("^the response code is (\\d+)$")
     public void theResponseCodeIs(int arg0) {
-        log.info("TESTS passed");
+        log.info("TESTS handle response code");
 
     }
 }
