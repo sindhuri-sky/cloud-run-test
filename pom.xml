@@ -6,8 +6,9 @@
 	<groupId>com.example</groupId>
 	<artifactId>helloworld-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<description>Parent for demo</description>
 	<packaging>pom</packaging>
+
+	<description>Parent for demo</description>
 
 	<properties>
 		<java.version>1.8</java.version>
