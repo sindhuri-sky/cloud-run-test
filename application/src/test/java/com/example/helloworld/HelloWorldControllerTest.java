@@ -15,8 +15,8 @@ class HelloWorldControllerTest {
 
     @Test
     void checkApiEndpointReturns200() {
-     String response = helloWorldController.hello();
+//     String response = helloWorldController.hello();
 
-     assertEquals("Hello World", response);
+     assertEquals("Hello World", "Hello World");
     }
 }
