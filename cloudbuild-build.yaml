@@ -4,6 +4,7 @@ steps:
     args: ['verify']
     dir: 'application'
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'build'
     args: ['build', '-t', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '.']
     dir: 'application'
 
