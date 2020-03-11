@@ -25,5 +25,5 @@ steps:
     args: ['mvn', 'verify','-Dcucumber.options="--strict --tags @ft --plugin pretty classpath:features"',  '-Dtest=com.example.helloworld.RunCukesTest']
     dir: 'cucumber-tests'
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'push'
-    args: ['push', 'gcr.io/pipeline-test-270210/cloud-run-test-pass:$SHORT_SHA']
+    id: 'pushToStable'
+    args: ['push', 'gcr.io/pipeline-test-270210/cloud-run-test-stable:$SHORT_SHA']
