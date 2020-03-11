@@ -15,7 +15,7 @@ steps:
     args: ['beta', 'run', 'deploy', 'cloud-run-test-func', '--image=gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
   - name: 'gcr.io/cloud-builders/mvn'
     id: 'functional-tests'
-    args: ['verify','-Dcucumber.options="--strict --tags @ft --plugin pretty classpath:features"',  '-Dtest=com.example.helloworld.RunCukesTest']
+    args: ['verify -Dcucumber.options="--strict --tags @ft --plugin pretty classpath:features" -Dtest=com.example.helloworld.RunCukesTest']
     dir: 'cucumber-tests'
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToInt'
