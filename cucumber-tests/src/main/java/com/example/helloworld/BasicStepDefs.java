@@ -31,7 +31,7 @@ public class BasicStepDefs
     @When("^the endpoint is called in functional$")
     public void theEndpointIsCalledInFunc() throws IOException {
         log.info("TESTS call endpoint");
-        HttpGet request = new HttpGet("https://cloud-run-test-func-g3352oeadq-uc.a.run.app/hello");
+        HttpGet request = new HttpGet("https://cloud-run-test-func-g3352oeadq-uc.a.run.app/");
         request.addHeader("content-type", "application/json");
         response = httpClient.execute(request);
     }
@@ -39,7 +39,7 @@ public class BasicStepDefs
     @When("^the endpoint is called in integration$")
     public void theEndpointIsCalledInInt() throws IOException {
         log.info("TESTS call endpoint");
-        HttpGet request = new HttpGet("https://cloud-run-test-int-g3352oeadq-uc.a.run.app/hello");
+        HttpGet request = new HttpGet("https://cloud-run-test-int-g3352oeadq-uc.a.run.app/");
         request.addHeader("content-type", "application/json");
         response = httpClient.execute(request);
     }
