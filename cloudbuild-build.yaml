@@ -13,17 +13,22 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToFunc'
     args: ['beta', 'run', 'deploy', 'cloud-run-test-func', '--image=gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
+    waitFor: 'push'
   - name: 'gcr.io/cloud-builders/mvn'
     id: 'functional-tests'
     args: ['verify', '-Dtest=com.example.helloworld.RunFuncTest']
     dir: 'cucumber-tests'
+    waitFor: 'deployToFunc'
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToInt'
     args: ['beta', 'run', 'deploy', 'cloud-run-test-int', '--image=gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
+    waitFor: 'push'
   - name: 'gcr.io/cloud-builders/mvn'
     id: 'integration-tests'
     args: ['verify', '-Dtest=com.example.helloworld.RunIntTest']
     dir: 'cucumber-tests'
+    waitFor: 'deployToInt'
   - name: 'gcr.io/cloud-builders/docker'
     id: 'pushToStable'
-    args: ['push', 'gcr.io/pipeline-test-270210/cloud-run-test-stable:$SHORT_SHA']
+    args: ['push', 'gcr.io/pipeline-test-270210/cloud-run-test:TEST']
+    waitFor: ['deployToFunc', 'deployToInt']
