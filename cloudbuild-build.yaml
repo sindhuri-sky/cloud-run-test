@@ -37,4 +37,4 @@ steps:
 # Promote Successful Images
   - name: 'gcr.io/cloud-builders/docker'
     id: 'promoteToStable'
-    args: ['push', 'gcr.io/pipeline-test-270210/cloud-run-test:TEST']
+    args: ['tag', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA','gcr.io/pipeline-test-270210/cloud-run-test:TEST']
