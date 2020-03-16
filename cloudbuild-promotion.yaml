@@ -20,7 +20,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'tagImage'
-    args: ['container', 'images', 'add-tag',  'gcr.io/pipeline-dev-271314/cloud-run-test:$SHORT_SHA', 'pipeline-prod-271314/cloud-run-test:$SHORT_SHA']
+    args: ['container', 'images', 'add-tag',  'gcr.io/pipeline-dev-271314/cloud-run-test:$SHORT_SHA', 'gcr.io/pipeline-prod-271314/cloud-run-test:$SHORT_SHA']
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToInt'
