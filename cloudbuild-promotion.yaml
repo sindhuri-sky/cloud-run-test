@@ -18,9 +18,9 @@ steps:
     args: ['verify', '-Dtest=com.example.helloworld.RunFuncTest']
     dir: 'cucumber-tests'
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'tagImage'
-    args: ['container', 'images', 'add-tag',  'gcr.io/pipeline-dev-271314/cloud-run-test:$SHORT_SHA', 'gcr.io/pipeline-prod-271314/cloud-run-test:$SHORT_SHA']
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push'
+    args: ['push', 'gcr.io/pipeline-prod-271314/cloud-run-test:$SHORT_SHA']
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToInt'
