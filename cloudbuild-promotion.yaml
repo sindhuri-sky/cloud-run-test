@@ -20,7 +20,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     id: 'pushToProd'
-    args: ['push', 'gcr.io/pipeline-prod-271314/cloud-run-test-stable:$SHORT_SHA']
+    args: ['push', 'gcr.io/pipeline-prod-271314/cloud-run-test:$SHORT_SHA']
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToInt'
