@@ -19,7 +19,7 @@ steps:
     dir: 'cucumber-tests'
 
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'push'
+    id: 'pushtoprod'
     args: ['push', 'gcr.io/pipeline-prod-271314/cloud-run-test:$SHORT_SHA']
 
   - name: 'gcr.io/cloud-builders/gcloud'
