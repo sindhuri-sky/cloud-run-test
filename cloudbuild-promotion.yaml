@@ -24,7 +24,7 @@ steps:
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToInt'
-    args: ['beta', 'run', 'deploy', 'cloud-run-test-int', '--image=gcr.io/pipeline-prod-271314/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
+    args: ['beta', 'run', 'deploy', 'cloud-run-test-int', '--image=gcr.io/pipeline-prod-271314/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed', '--project=pipeline-prod-271314' ]
   - name: 'gcr.io/cloud-builders/mvn'
     id: 'integration-tests'
     args: ['verify', '-Dtest=com.example.helloworld.RunIntTest']
