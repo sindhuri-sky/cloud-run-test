@@ -20,7 +20,7 @@ FROM adoptopenjdk/openjdk8:jdk8u202-b08-alpine-slim
 RUN ls
 RUN pwd
 # Copy the jar to the production image from the builder stage.
-COPY /jar/build/libs/helloworld-*.jar /helloworld.jar
+COPY /jar/build/libs/helloworld.jar /helloworld.jar
 
 # Run the web service on container startup.
 CMD ["java","-Djava.security.egd=file:/dev/./urandom","-Dserver.port=${PORT}","-jar","/helloworld.jar"]
