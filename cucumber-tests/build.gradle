@@ -1,0 +1,23 @@
+apply plugin: 'java'
+
+
+dependencies {
+    compile group: 'io.cucumber', name: 'cucumber-java', version: '4.8.0'
+    compile group: 'io.cucumber', name: 'cucumber-junit', version: '4.8.0'
+    compile group: 'io.cucumber', name: 'cucumber-spring', version: '4.8.0'
+    compile group: 'io.cucumber', name: 'cucumber-core', version: '4.8.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.2'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    testCompile 'junit:junit:4.12'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.2.RELEASE'
+    compile group: 'org.assertj', name: 'assertj-core', version: '3.14.0'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+    compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.5'
+
+}
+task localFunctionalTests(type: JavaExec) {
+    main = "io.cucumber.core.cli.Main"
+    classpath = project.sourceSets.test.runtimeClasspath
+    args = ['--strict','--plugin', 'pretty', '--glue','com.example.helloworld', 'classpath:features']
+
+}
