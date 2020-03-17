@@ -17,6 +17,8 @@
 # https://docs.docker.com/develop/develop-images/multistage-build/#use-multi-stage-builds
 FROM adoptopenjdk/openjdk8:jdk8u202-b08-alpine-slim
 
+RUN ls
+RUN pwd
 # Copy the jar to the production image from the builder stage.
 COPY build/libs/helloworld-*.jar /helloworld.jar
 
