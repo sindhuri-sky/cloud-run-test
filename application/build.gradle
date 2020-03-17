@@ -58,3 +58,10 @@ def commonJarConfigClosure = {
 
 bootJar commonJarConfigClosure
 jar commonJarConfigClosure
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
