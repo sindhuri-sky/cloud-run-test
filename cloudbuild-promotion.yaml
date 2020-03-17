@@ -3,12 +3,17 @@ steps:
     id: 'buildJar'
     args: ['build']
     dir: 'application'
+    volumes:
+      - name: 'jar'
+        path: /jar
 
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build'
     args: ['build', '-t', 'gcr.io/development-271408/cloud-run-test:$SHORT_SHA', '.']
     dir: 'application'
-
+    volumes:
+      - name: 'jar'
+        path: /jar
 #  - name: 'gcr.io/cloud-builders/docker'
 #    id: 'push'
 #    args: ['push', 'gcr.io/development-271408/cloud-run-test:$SHORT_SHA']
