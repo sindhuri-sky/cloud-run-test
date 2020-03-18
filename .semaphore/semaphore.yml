@@ -1,0 +1,85 @@
+version: v1.0
+
+# Name of your pipeline. In this example we connect two pipelines with
+# a promotion, so it helps to differentiate what's the job of each.
+name: Java Spring example CI pipeline on Semaphore
+
+# An agent defines the environment in which your code runs.
+# It is a combination of one of available machine types and operating
+# system images. See:
+# https://docs.semaphoreci.com/article/20-machine-types
+# https://docs.semaphoreci.com/article/32-ubuntu-1804-image
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+# Blocks are the heart of a pipeline and are executed sequentially.
+# Each block has a task that defines one or more jobs. Jobs define the
+# commands to execute.
+# See https://docs.semaphoreci.com/article/62-concepts
+blocks:
+  - name: "Build"
+    dependencies: []
+    task:
+      # Set environment variables that your project requires.
+      # See https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
+      env_vars:
+        - name: MAVEN_OPTS
+          value: "-Dmaven.repo.local=.m2"
+
+      jobs:
+        - name: Build
+          commands:
+            # Checkout code from Git repository. This step is mandatory if the
+            # job is to work with your code.
+            - checkout
+            - mvn clean install
+
+  - name: "Test"
+    dependencies: ["Build"]
+    task:
+      env_vars:
+        - name: MAVEN_OPTS
+          value: "-Dmaven.repo.local=.m2"
+
+      # This block runs two jobs in parallel and they both share common
+      # setup steps. We can group them in a prologue.
+      # See https://docs.semaphoreci.com/article/50-pipeline-yaml#prologue
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - mvn -q test-compile -Dmaven.test.skip=true
+      jobs:
+        - name: Unit tests
+          commands:
+            - mvn test
+
+  - name: "Push Image"
+    dependencies: ["Test"]
+    task:
+      secrets:
+        - name: GCP
+      prologue:
+        commands:
+          # Authenticate using the file injected from the secret
+          - gcloud auth activate-service-account --key-file=.helloworldkey.json
+          # Don't forget -q to silence confirmation prompts
+          - gcloud auth configure-docker -q
+          - checkout
+      jobs:
+        - name: Docker build
+          commands:
+            # Replace with your GCP Project ID
+            - ls
+            - cd application
+            - docker build -t "gcr.io/advance-age-269909/cloud-run-test:${SEMAPHORE_GIT_SHA:0:7}" .
+            - docker push "gcr.io/advance-age-269909/cloud-run-test:${SEMAPHORE_GIT_SHA:0:7}"
+promotions:
+  # Deployment to staging can be trigger manually:
+  - name: Deploy to functional
+    pipeline_file: deploy-functional.yml
+    auto_promote_on:
+      - result: passed
+        branch:
+          - master

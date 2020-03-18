@@ -1,0 +1,60 @@
+import java.time.Duration
+buildscript {
+    dependencies {// For creating minor change requests
+        classpath 'pl.allegro.tech.build:axion-release-plugin:1.10.0' // Creates git tags to version releases
+    }
+}
+plugins {
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+}
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'application' // Required for running the jar as a main program
+apply plugin: 'pl.allegro.tech.build.axion-release'
+
+
+
+// axion-release plugin
+scmVersion {
+    tag { prefix = project.name } // Tags will start with reference-service
+    versionIncrementer 'incrementMinor' // The default is patch (least significant) number, so we change to minor (middle number)
+    versionCreator { version, position -> getCurrentVersion(version) } // Use the commit id if on a branch so we can link the docker image to git
+    hooks { post { context -> project.version = getCurrentVersion(context.currentVersion)} } // this is required for k8-plugin to tag the image with the same version
+}
+
+// pass in deployVersion if you want to manually deploy a specific version e.g. '0.999.0'
+project.version = project.findProperty('deployVersion') ?: scmVersion.version
+
+dependencies {
+    // HTTP server framework and utilities
+    compile 'org.springframework.boot:spring-boot-starter-web:2.2.1.RELEASE'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
+}
+
+// Properties for the 'application' plugin to set the entry point in the manifest
+group = 'example.helloworld'
+mainClassName = 'com.example.helloworld.HelloWorldApplication'
+
+
+
+// Both of these Axion release settings are required for releasing on Jenkins
+project.ext.setProperty('release.disableChecks', 'true')
+project.ext.setProperty('release.pushTagsOnly', 'true')
+
+// This is called from reference-service/cd-scripts/cdCheckBeforeDeployProd.sh
+// It queries our Prometheus for any major alerts on the canary
+springBoot {
+    buildInfo()
+}
+
+def commonJarConfigClosure = {
+    archiveName = "helloworld.jar"
+}
+
+bootJar commonJarConfigClosure
+jar commonJarConfigClosure

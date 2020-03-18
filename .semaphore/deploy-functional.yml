@@ -1,0 +1,30 @@
+version: v1.0
+name: Deploy to stubbed functional
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Deploy to stubbed functional
+    dependencies: []
+    task:
+      secrets:
+        - name: GCP
+      jobs:
+        - name: run deploy
+          commands:
+            - gcloud auth activate-service-account --key-file=.helloworldkey.json
+            - gcloud auth configure-docker -q
+            - gcloud run deploy cloud-run-test-ft --project advance-age-269909 --image gcr.io/advance-age-269909/cloud-run-test:${SEMAPHORE_GIT_SHA:0:7} --region europe-west4 --platform managed
+  - name: ft
+    dependencies: ["Deploy to stubbed functional"]
+    task:
+        prologue:
+         commands:
+            - checkout
+        jobs:
+          - name: run fts
+            commands:
+              - ls
+              - cd cucumber-tests
+              - mvn verify -Dcucumber.options="--strict --tags @ft --plugin pretty classpath:features"
