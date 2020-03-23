@@ -12,3 +12,9 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'pushImage'
     args: ['push', 'gcr.io/compute-engine-271512/ref-app:$SHORT_SHA']
+
+
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [ 'beta', 'run', 'deploy', 'gke-angular', '--image', 'gcr.io/compute-engine-271512/ref-app:$SHORT_SHA', '--platform', 'gke', '--cluster', 'dev-cluster', '--cluster-location', 'us-central1-a' ]
+

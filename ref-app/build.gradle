@@ -17,7 +17,6 @@ apply plugin: 'application' // Required for running the jar as a main program
 apply plugin: 'pl.allegro.tech.build.axion-release'
 
 
-
 // axion-release plugin
 scmVersion {
     tag { prefix = project.name } // Tags will start with reference-service
