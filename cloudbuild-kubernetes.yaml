@@ -1,0 +1,14 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gradle'
+    id: 'buildJar'
+    args: ['build']
+    dir: 'ref-app'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'buildImage'
+    args: ['build', '-t', 'gcr.io/compute-engine-271512/ref-app:$SHORT_SHA', '.']
+    dir: 'ref-app'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'pushImage'
+    args: ['push', 'gcr.io/compute-engine-271512/ref-app:$SHORT_SHA']
