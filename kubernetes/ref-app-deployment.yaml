@@ -36,6 +36,13 @@ spec:
       containers:
         - name: ref-app
           image: gcr.io/dotted-saga-272108/ref-app:latest
+          env:
+            - name: CLOUDSDK_COMPUTE_REGION
+              value: "us-central1"
+            - name: CLOUDSDK_COMPUTE_ZONE
+              value: "us-central1-a"
+            - name: CLOUDSDK_CONTAINER_CLUSTER
+              value: "joanne-cluster"
           ports:
             - name: http
               containerPort: 8080
