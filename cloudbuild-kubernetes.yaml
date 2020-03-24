@@ -14,7 +14,7 @@ steps:
     args: ['push', 'gcr.io/$PROJECT_ID/ref-app:$SHORT_SHA']
 
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'pushImage'
+    id: 'pushImageToLatest'
     args: ['push', 'gcr.io/$PROJECT_ID/ref-app:latest']
 
 
