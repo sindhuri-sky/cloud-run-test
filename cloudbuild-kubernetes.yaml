@@ -13,11 +13,18 @@ steps:
     id: 'pushImage'
     args: ['push', 'gcr.io/$PROJECT_ID/ref-app:$SHORT_SHA']
 
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'pushImage'
+    args: ['push', 'gcr.io/$PROJECT_ID/ref-app:latest']
 
-  # Deploy container image to Cloud Run
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: [ 'beta', 'run', 'deploy', 'gke-angular', '--image', 'gcr.io/$PROJECT_ID/ref-app:$SHORT_SHA', '--platform', 'gke', '--cluster', 'joanne-cluster', '--cluster-location', 'us-central1-a' ]
+
+  # Deploy container image to Kubernetes
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: 'deploy'
+    args: [ 'kubectl',  'apply', '-f', 'ref-app-deployment.yaml' ]
+    dir: 'kubernetes'
 
 #    beta run deploy gke-angular --image gcr.io/$PROJECT_ID/ref-app:$SHORT_SHA --platform gke --cluster dev-cluster --cluster-location us-central1-a
 #gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project dotted-saga-272108
-#gcloud container clusters get-credentials joanne-cluster --zone us-central1-a --project dotted-saga-272108
+# gcloud container clusters get-credentials joanne-cluster --zone us-central1-a --project dotted-saga-272108
+# kubectl apply -f /home/joannenolan/cloud-run-test/kubernetes/ref-app-deployment.yaml

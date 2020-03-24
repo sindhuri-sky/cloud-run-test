@@ -35,7 +35,7 @@ spec:
             secretName: dev-service-account
       containers:
         - name: ref-app
-          image: gcr.io/dotted-saga-272108/ref-app:270f191
+          image: gcr.io/dotted-saga-272108/ref-app:latest
           ports:
             - name: http
               containerPort: 8080
