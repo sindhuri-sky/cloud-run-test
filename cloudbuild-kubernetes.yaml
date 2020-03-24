@@ -14,9 +14,8 @@ steps:
     args: ['push', 'gcr.io/$PROJECT_ID/ref-app:$SHORT_SHA']
 
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'pushImageToLatest'
-    args: ['push', 'gcr.io/$PROJECT_ID/ref-app:latest']
-
+      id: 'pushImageToLatest'
+      args: ['tag', 'gcr.io/$PROJECT_ID/ref-app:$SHORT_SHA', 'gcr.io/$PROJECT_ID/ref-app:latest']
 
   # Deploy container image to Kubernetes
   - name: 'gcr.io/cloud-builders/kubectl'
