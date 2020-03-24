@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ref-app
+  name: ref-app
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: ref-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ref-app
+  name: ref-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ref-app
+  template:
+    metadata:
+      labels:
+        app: ref-app
+    spec:
+      volumes:
+        - name: credentials
+          secret:
+            secretName: dev-service-account
+      containers:
+        - name: ref-app
+          image: gcr.io/dotted-saga-272108/ref-app:270f191
+          ports:
+            - name: http
+              containerPort: 8080
