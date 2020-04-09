@@ -24,7 +24,7 @@ public class BasicStepDefs
 
     @Given("^setup app$")
     public void setupApp() {
-        log.info("TESTS setup");
+        log.info("TESTS setup123");
 
     }
 
