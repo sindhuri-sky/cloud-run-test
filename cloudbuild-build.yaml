@@ -6,16 +6,16 @@ steps:
     dir: 'application'
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build'
-    args: ['build', '-t', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '.']
+    args: ['build', '-t', 'gcr.io/cloud-run-example-273623/cloud-run-test:$SHORT_SHA', '.']
     dir: 'application'
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push'
-    args: ['push', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA']
+    args: ['push', 'gcr.io/cloud-run-example-273623/cloud-run-test:$SHORT_SHA']
 
 # Integration Tests using deployed applications
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToFunc'
-    args: ['beta', 'run', 'deploy', 'cloud-run-test-func', '--image=gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
+    args: ['beta', 'run', 'deploy', 'cloud-run-test-func', '--image=gcr.io/cloud-run-example-273623/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
     waitFor: ['push']
   - name: 'gcr.io/cloud-builders/mvn'
     id: 'functional-tests'
@@ -26,7 +26,7 @@ steps:
 # Integration Tests using deployed applications
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'deployToInt'
-    args: ['beta', 'run', 'deploy', 'cloud-run-test-int', '--image=gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
+    args: ['beta', 'run', 'deploy', 'cloud-run-test-int', '--image=gcr.io/cloud-run-example-273623/cloud-run-test:$SHORT_SHA', '--region=us-central1', '--platform=managed']
     waitFor: ['push']
   - name: 'gcr.io/cloud-builders/mvn'
     id: 'integration-tests'
@@ -37,4 +37,4 @@ steps:
 # Promote Successful Images
   - name: 'gcr.io/cloud-builders/docker'
     id: 'promoteToStable'
-    args: ['tag', 'gcr.io/pipeline-test-270210/cloud-run-test:$SHORT_SHA','gcr.io/pipeline-test-270210/cloud-run-test:latest']
+    args: ['tag', 'gcr.io/cloud-run-example-273623/cloud-run-test:$SHORT_SHA','gcr.io/cloud-run-example-273623/cloud-run-test:latest']
